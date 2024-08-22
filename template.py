@@ -20,7 +20,8 @@ lst_of_files = [
     "params/params.yaml",
     "requirements.txt",
     "setup.py",
-    "research/trials.ipynb"
+    "research/trials.ipynb",
+    "templates/index.html"
 ]
 
 directories = {str(Path(p).parent) for p in lst_of_files}
