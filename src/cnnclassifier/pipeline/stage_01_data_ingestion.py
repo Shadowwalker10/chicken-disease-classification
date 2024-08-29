@@ -22,7 +22,7 @@ class DataIngestionPipeline:
         to_check = Path(os.path.join(main_path, "Train"))
         if "Train"  in os.listdir(main_path) and get_size(to_check)>100:
             logger.info(f"File : {data_ingestion_config.dataset_name} already downloaded")
-            sys.exit()
+            return
         logger.info(f"Downloading the dataset {data_ingestion_config.dataset_name}")
         dataset_ingestion.download_file()
         logger.info(f"Dataset: {data_ingestion_config.dataset_name} successfully downloaded")
@@ -44,4 +44,4 @@ class DataIngestionPipeline:
             source_path = source_dir/img
             destination_path = class_directory/img
             shutil.move(src=str(source_path), dst=str(destination_path))
-    logger.info("Successfully restructured dataset folder structure")
+        logger.info("Successfully restructured dataset folder structure")
