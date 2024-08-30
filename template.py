@@ -12,6 +12,7 @@ lst_of_files = [
     f"src/{project_name}/components/__init__.py",
     f"src/{project_name}/components/data_ingestion.py",
     f"src/{project_name}/components/prepare_base_model.py",
+    f"src/{project_name}/components/prepare_callbacks.py",
     f"src/{project_name}/utils/__init__.py",
     f"src/{project_name}/utils/common.py",
     f"src/{project_name}/config/__init__.py",
@@ -30,7 +31,8 @@ lst_of_files = [
     "templates/index.html",
     "secrets/secrets.yaml",
     "research/01_data_ingestion.ipynb",
-    "research/02_prepare_base_model.ipynb"
+    "research/02_prepare_base_model.ipynb",
+    "research/03_prepare_callbacks.ipynb"
 ]
 
 directories = {str(Path(p).parent) for p in lst_of_files}
