@@ -21,8 +21,9 @@ class ConfigurationManager:
             root_dir = config.root_dir,
             dataset_name = config.dataset_name,
             local_data_file = config.local_data_file,
-            unzip_dir = config.unzip_dir
-        )
+            unzip_dir = config.unzip_dir,
+            class_weight = config.class_weight
+            )
         return data_ingestion_config
 
     def get_prepare_base_model_config(self)->PrepareBaseModelConfig:
@@ -59,6 +60,29 @@ class ConfigurationManager:
 
         prepare_callbacks_config = PrepareCallbacksConfig(root_dir = Path(config.root_dir), 
                                                           tensorboard_root_log_dir= Path(config.tensorboard_root_log_dir),
-                                                          checkpoint_model_filepath = Path(config.checkpoint_model_filepath))
+                                                          checkpoint_model_filepath = Path(config.checkpoint_model_filepath),
+                                                          learning_rate = self.params.learning_rate)
         
         return prepare_callbacks_config
+    
+    def get_model_trainer_config(self) -> ModelTrainingConfig:
+        model_training = self.config.model_training
+        prepare_base_model = self.config.prepare_base_model
+        training_data = os.path.join(self.config.data_ingestion.local_data_file, "Train")
+        create_directories_files([Path(model_training.root_dir)])
+
+
+        model_training_config = ModelTrainingConfig(root_dir = Path(model_training.root_dir),
+                                                    trained_model_path = Path(model_training.trained_model_path),
+                                                    updated_base_model_path = Path(prepare_base_model.updated_base_model_path),
+                                                    training_data = training_data,
+                                                    params_input_shape = self.params.input_shape,
+                                                    params_batch_size = self.params.batch_size,
+                                                    params_learning_rate = self.params.learning_rate, 
+                                                    params_horizontal_flip = self.params.horizontal_flip,
+                                                    params_rotation_range = self.params.rotation_range,
+                                                    params_zoom_range = self.params.zoom_range,
+                                                    params_epochs = self.params.epochs, 
+                                                    params_dropout_rate = self.params.dropout_rate,
+                                                    params_weight_decay = self.params.weight_decay)
+        return model_training_config

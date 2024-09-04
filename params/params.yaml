@@ -1,14 +1,14 @@
 input_shape : [224, 224, 3]
-batch_size : 16
+batch_size : 8
 num_classes : 8
 weights: imagenet
 include_top: False
-learning_rate: 0.001
+learning_rate: 0.0001
 horizontal_flip: True
 rotation_range: 20
 zoom_range: 0.2
-epochs: 100
-dropout_rate: 0.5
-weight_decay: 0.0001
+epochs: 500
+dropout_rate: 0.3
+weight_decay: 0.016
 freeze_all: False
 freeze_till: 5

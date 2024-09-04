@@ -6,7 +6,7 @@ import os
 import shutil
 from pathlib import Path
 import sys
-
+import json
 
 
 ## Creating the pipeline
@@ -44,4 +44,13 @@ class DataIngestionPipeline:
             source_path = source_dir/img
             destination_path = class_directory/img
             shutil.move(src=str(source_path), dst=str(destination_path))
+        
         logger.info("Successfully restructured dataset folder structure")
+
+
+
+
+
+
+
+

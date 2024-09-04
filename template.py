@@ -13,6 +13,7 @@ lst_of_files = [
     f"src/{project_name}/components/data_ingestion.py",
     f"src/{project_name}/components/prepare_base_model.py",
     f"src/{project_name}/components/prepare_callbacks.py",
+    f"src/{project_name}/components/model_training.py",
     f"src/{project_name}/utils/__init__.py",
     f"src/{project_name}/utils/common.py",
     f"src/{project_name}/config/__init__.py",
@@ -20,6 +21,7 @@ lst_of_files = [
     f"src/{project_name}/pipeline/__init__.py",
     f"src/{project_name}/pipeline/stage_01_data_ingestion.py",
     f"src/{project_name}/pipeline/stage_02_prepare_base_model.py",
+    f"src/{project_name}/pipeline/stage_03_model_trainer.py",
     f"src/{project_name}/entity/__init__.py",
     f"src/{project_name}/constants/__init__.py",
     f"src/{project_name}/logging/__init__.py",
@@ -32,7 +34,8 @@ lst_of_files = [
     "secrets/secrets.yaml",
     "research/01_data_ingestion.ipynb",
     "research/02_prepare_base_model.ipynb",
-    "research/03_prepare_callbacks.ipynb"
+    "research/03_prepare_callbacks.ipynb",
+    "research/04_model_trainer.ipynb"
 ]
 
 directories = {str(Path(p).parent) for p in lst_of_files}

@@ -8,6 +8,7 @@ class DataIngestionConfig:
     dataset_name: str
     local_data_file: Path
     unzip_dir: Path
+    class_weight: Path
 
 ## Base Model Preparation Entity
 @dataclass(frozen = True)
@@ -39,6 +40,24 @@ from pathlib import Path
 class PrepareCallbacksConfig:
     root_dir: Path
     tensorboard_root_log_dir: Path
-    checkpoint_model_filepath: Path    
+    checkpoint_model_filepath: Path
+    learning_rate: float    
+
+
+@dataclass
+class ModelTrainingConfig:
+    root_dir: Path
+    trained_model_path: Path
+    updated_base_model_path: Path
+    training_data: Path
+    params_input_shape : list
+    params_batch_size : int
+    params_learning_rate: float
+    params_horizontal_flip: bool
+    params_rotation_range: float
+    params_zoom_range: float
+    params_epochs: int
+    params_dropout_rate: float
+    params_weight_decay: float
 
     

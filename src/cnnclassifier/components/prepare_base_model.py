@@ -1,7 +1,10 @@
 import os
+from tensorflow.keras import regularizers
 import tensorflow as tf
 from cnnclassifier.entity import PrepareBaseModelConfig
 from pathlib import Path
+import json
+
 
 class PrepareBaseModel:
     def __init__(self, config: PrepareBaseModelConfig):
@@ -9,10 +12,13 @@ class PrepareBaseModel:
         
     
     def get_base_model(self):
-        self.model = tf.keras.applications.vgg16.VGG16(include_top = self.config.params_include_top,
+        self.model = tf.keras.applications.VGG16(include_top = self.config.params_include_top,
                                                        weights = self.config.params_weights,
-                                                       input_shape = self.config.params_input_shape
+                                                       input_shape = self.config.params_input_shape,
+                                                       pooling="max"
                                                        )
+        
+
         
         self.save_model(path = self.config.base_model_path, model = self.model)
 
@@ -22,23 +28,32 @@ class PrepareBaseModel:
     ## PrepareBaseModel._prepare_full_model()
 
     @staticmethod
-    def _prepare_full_model(model, classes:int, freeze_all:bool, freeze_till:int, learning_rate):
+    def _prepare_full_model(model, classes:int, freeze_all:bool, freeze_till:int, learning_rate, weight_decay, dropout_rate):
         if freeze_all:
             for layer in model.layers:
-                model.trainable = False
+                layer.trainable = False
         elif (freeze_till is not None) and (freeze_till>0):
             for layer in model.layers[:-freeze_till]:
-                model.trainable = False
+                layer.trainable = False
+        #batch_norm = tf.keras.layers.BatchNormalization(axis= -1, momentum= 0.99, epsilon= 0.001)(model.output)
         flatten_in = tf.keras.layers.Flatten()(model.output)
-        dense1 = tf.keras.layers.Dense(units = 2048, activation = "relu")(flatten_in)
-        dense2 = tf.keras.layers.Dense(units = 128, activation = "relu")(dense1)
+        dense1 = tf.keras.layers.Dense(units = 256, activation = "relu", 
+                                       kernel_regularizer = regularizers.l2(weight_decay), 
+                                       activity_regularizer=regularizers.l1(0.006))(flatten_in)
+        dropout1 = tf.keras.layers.Dropout(dropout_rate)(dense1)
+        dense2 = tf.keras.layers.Dense(units = 256, activation = "relu", 
+                                       kernel_regularizer = regularizers.l2(weight_decay),
+                                       activity_regularizer=regularizers.l1(0.006))(dropout1)
+        dropout2 = tf.keras.layers.Dropout(dropout_rate)(dense2)
         prediction = tf.keras.layers.Dense(units = classes,
-                                           activation = "softmax")(dense2)
+                                           activation = "softmax")(dropout2)
         full_model = tf.keras.models.Model(model.input, 
                                            prediction)
         full_model.compile(optimizer = tf.keras.optimizers.Adam(learning_rate = learning_rate),
                            loss = tf.keras.losses.CategoricalCrossentropy(),
-                           metrics = ["accuracy", "precision", "recall"])
+                           metrics = ["accuracy", 
+                                      tf.keras.metrics.Precision(), 
+                                      tf.keras.metrics.Recall()])
         
         full_model.summary()
         return full_model
@@ -48,13 +63,20 @@ class PrepareBaseModel:
                                                    classes = self.config.params_num_classes, 
                                                    freeze_all = self.config.params_freeze_all, 
                                                    freeze_till = self.config.params_freeze_till, 
-                                                   learning_rate = self.config.params_learning_rate)
+                                                   learning_rate = self.config.params_learning_rate,
+                                                   weight_decay = self.config.params_weight_decay,
+                                                   dropout_rate = self.config.params_dropout_rate)
         self.save_model(path = self.config.updated_base_model_path, 
                         model = self.full_model)
         
     @staticmethod
     def save_model(path: Path, model: tf.keras.Model):
-        model.save(filepath = path)
+        try:
+            ## Save the model
+            model.save(filepath=path)
+        except Exception as e:
+            print("Serialization error:", e)
+            model.save_weights(path)
 
 
 

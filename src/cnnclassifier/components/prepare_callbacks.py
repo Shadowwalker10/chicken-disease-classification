@@ -25,7 +25,7 @@ class PrepareCallbacks:
         return tf.keras.callbacks.ReduceLROnPlateau(monitor = "val_loss", 
                                                     factor = 0.2, 
                                                     patience = 5, 
-                                                    min_lr = 0.001)
+                                                    min_lr = self.config.learning_rate/1000)
     
     @property
     def _create_earlystopping_callbacks(self):
