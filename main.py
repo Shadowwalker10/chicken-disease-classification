@@ -5,6 +5,7 @@ import json
 from cnnclassifier.pipeline.stage_01_data_ingestion import DataIngestionPipeline
 from cnnclassifier.pipeline.stage_02_prepare_base_model import PrepareBaseModelPipeline
 from cnnclassifier.pipeline.stage_03_model_trainer import ModelTrainingPipeline
+from cnnclassifier.pipeline.stage_04_model_evaluation import ModelEvaluationPipeline
 from cnnclassifier.config.configuration import ConfigurationManager
 
 STAGE_NAME = "Data Ingestion Stage"
@@ -61,6 +62,18 @@ try:
     logger.info(f'{"*"*50}')
     logger.info(f"<<<<<{STAGE_NAME} Started>>>>>")
     obj = ModelTrainingPipeline()
+    obj.main()
+    logger.info(f"<<<<<{STAGE_NAME} Successfully Completed>>>>>")
+except Exception as e:
+    logger.exception(e)
+    raise e
+
+
+STAGE_NAME = "Evaluating the Model"
+try:
+    logger.info(f'{"*"*50}')
+    logger.info(f"<<<<<{STAGE_NAME} Started>>>>>")
+    obj = ModelEvaluationPipeline()
     obj.main()
     logger.info(f"<<<<<{STAGE_NAME} Successfully Completed>>>>>")
 except Exception as e:

@@ -60,4 +60,13 @@ class ModelTrainingConfig:
     params_dropout_rate: float
     params_weight_decay: float
 
+
+@dataclass(frozen = True)
+class ModelEvaluationConfig:
+    model_path: Path
+    evaluation_data: Path
+    all_params: dict
+    params_image_size: list
+    params_batch_size: int
+
     

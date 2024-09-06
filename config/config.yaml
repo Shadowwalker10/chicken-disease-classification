@@ -21,3 +21,7 @@ prepare_callbacks:
 model_training:
   root_dir: artifacts/model_training
   trained_model_path: artifacts/model_training/model.h5
+
+model_evaluation:
+  model_path: artifacts/model_training/model.h5
+  evaluation_data: artifacts/data_ingestion/Train

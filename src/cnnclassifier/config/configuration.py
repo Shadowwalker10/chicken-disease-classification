@@ -86,3 +86,16 @@ class ConfigurationManager:
                                                     params_dropout_rate = self.params.dropout_rate,
                                                     params_weight_decay = self.params.weight_decay)
         return model_training_config
+    
+
+    def get_evaluation_config(self)-> ModelEvaluationConfig:
+        config = self.config.model_evaluation
+
+        model_eval_config = ModelEvaluationConfig(model_path=config.model_path, 
+                                                    evaluation_data = config.evaluation_data,
+                                                    all_params= self.params,
+                                                    params_image_size = self.params.input_shape,
+                                                    params_batch_size = self.params.batch_size
+                                                    )
+        
+        return model_eval_config
