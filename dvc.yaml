@@ -1,0 +1,83 @@
+stages:
+  data_ingestion:
+    cmd: python src/cnnclassifier/pipeline/stage_01_data_ingestion.py
+    deps:
+      - src/cnnclassifier/pipeline/stage_01_data_ingestion.py
+      - config/config.yaml
+    outs:
+      - artifacts/data_ingestion/Train:
+          persist : true
+      - artifacts/class_weights.json:
+          cache: false
+
+  prepare_base_model:
+    cmd: python src/cnnclassifier/pipeline/stage_02_prepare_base_model.py
+    deps:
+      - src/cnnclassifier/pipeline/stage_02_prepare_base_model.py
+      - config/config.yaml
+    params:
+      - input_shape,
+      - batch_size,
+      - num_classes,
+      - weights,
+      - include_top,
+      - learning_rate,
+      - horizontal_flip,
+      - rotation_range,
+      - zoom_range,
+      - epochs,
+      - dropout_rate,
+      - weight_decay,
+      - freeze_all,
+      - freeze_till
+    outs:
+      - artifacts/prepare_base_model
+
+  model_training:
+    cmd: python src/cnnclassifier/pipeline/stage_03_model_trainer.py
+    deps:
+      - python src/cnnclassifier/pipeline/stage_03_model_trainer.py
+      - config/config.yaml
+      - python src/cnnclassifier/components/prepare_callbacks.py
+      - artifacts/data_ingestion/Train
+      - artifacts/prepare_base_model
+    params:
+      - input_shape
+      - batch_size
+      - learning_rate
+      - horizontal_flip
+      - rotation_range
+      - zoom_range
+      - epochs
+      - dropout_rate
+      - weight_decay
+    outs:
+      - artifacts/model_training/model.h5
+      - artifacts/model_training/skip.txt:
+          cache: false
+ 
+      
+
+  model_evaluation:
+    cmd: python src/cnnclassifier/pipeline/stage_04_model_evaluation.py
+    deps:
+      - python src/cnnclassifier/pipeline/stage_04_model_evaluation.py
+      - config/config.yaml
+      - artifacts/data_ingestion/Train
+      - artifacts/model_training/model.h5
+    params:
+      - image_size
+      - batch_size
+    metrics:
+      - scores.json:
+          cache: false
+
+
+
+
+
+
+
+
+    
+

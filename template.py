@@ -31,6 +31,7 @@ lst_of_files = [
     "params/params.yaml",
     "requirements.txt",
     "setup.py",
+    "dvc.yaml",
     "research/trials.ipynb",
     "templates/index.html",
     "secrets/secrets.yaml",

@@ -20,12 +20,16 @@ class ModelTrainingPipeline:
                 start_training = True
             else:
                 start_training = False
+                with open(os.path.join(training_config.root_dir, "skip.txt"), "w") as f:
+                    f.write("Model Training Skipped")
                 logger.info("Model Training was skipped by the user")
         else:
             logger.info("No trained model found. Starting Training")
             start_training = True
 
         if start_training:
+            if os.path.exists(os.path.join(training_config.root_dir, "skip.txt")):
+                os.remove(os.path.join(training_config.root_dir, "skip.txt"))
 
             config = ConfigurationManager()
             prepare_callbacks_config = config.get_callbacks_config()
