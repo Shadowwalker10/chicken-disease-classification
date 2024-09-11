@@ -1,0 +1,73 @@
+body {
+    font-family: 'Open Sans', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.hero {
+    background-color: #f0f0f0;
+    padding: 20px;
+    text-align: center;
+}
+
+.upload {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;  /* Center everything horizontally */
+}
+
+.image-upload {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;  /* Center the image and buttons */
+}
+
+#uploaded-image {
+    width: 200px;
+    height: 200px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 5px;
+    display: none;        /* Hide the image by default */
+    margin-top: 20px;     /* Space between the button and the image */
+}
+
+#predict-btn, #camera-btn {
+    margin-top: 10px;
+}
+
+#camera-btn {
+    background-color: #4CAF50; /* Green background */
+    border: none;
+    color: white;             /* White text */
+    padding: 10px 20px;       /* Padding around the button */
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-top: 10px;
+    border-radius: 5px;       /* Rounded corners */
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+#camera-btn:hover {
+    background-color: #45a049; /* Darker green on hover */
+}
+
+.result {
+    padding: 20px;
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center;     /* Center vertically */
+    height: 100px;           /* Adjust as needed */
+}
+
+#result {
+    font-size: 24px;
+    font-weight: bold;
+    color: #00698f;
+    text-align: center;  /* Center text */
+}

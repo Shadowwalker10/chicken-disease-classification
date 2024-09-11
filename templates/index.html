@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chicken Disease Prediction</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&display=swap">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <main>
+        <section class="hero">
+            <h1>Chicken Disease Prediction</h1>
+            <p>Predict whether a chicken is healthy or has a disease based on its fecal image.</p>
+        </section>
+
+        <section class="upload">
+            <div class="image-upload">
+                <input type="file" name="image" accept="image/*" id="image-input">
+                <button type="button" id="camera-btn">Take Picture</button>
+                <img id="uploaded-image" src="" alt="Uploaded Image">
+            </div>
+            <button type="button" id="predict-btn">Predict</button>
+        </section>
+
+        <section class="result">
+            <div id="result"></div>
+        </section>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
